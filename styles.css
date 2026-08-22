@@ -1,0 +1,380 @@
+/* =========================================================================
+   AI Fraud Intelligence Command Center — Design System
+   Direction: Banking SOC / signal-intelligence terminal.
+   Palette: near-black navy hull, cyan "signal" accent, violet for GenAI,
+   and a strict 4-tone risk scale (safe -> medium -> high -> fraud).
+   Type: Space Grotesk (display) + IBM Plex Mono (data/terminal) + Inter (body)
+   ========================================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
+
+:root {
+    --bg-void: #05070C;
+    --bg-primary: #0A0E16;
+    --bg-secondary: #0E1420;
+    --bg-panel: rgba(17, 24, 38, 0.72);
+    --bg-panel-solid: #101826;
+    --border-glass: rgba(0, 217, 255, 0.14);
+    --border-glass-strong: rgba(0, 217, 255, 0.32);
+
+    --accent-cyan: #00D9FF;
+    --accent-cyan-dim: rgba(0, 217, 255, 0.14);
+    --accent-violet: #8B7CF6;
+    --accent-violet-dim: rgba(139, 124, 246, 0.14);
+
+    --risk-safe: #10E0A0;
+    --risk-medium: #F5B342;
+    --risk-high: #F97316;
+    --risk-fraud: #FF3B5C;
+
+    --text-primary: #E9EEF5;
+    --text-secondary: #8E9BAD;
+    --text-dim: #5B6579;
+
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+    --font-body: 'Inter', sans-serif;
+
+    --radius-lg: 16px;
+    --radius-md: 10px;
+    --radius-sm: 6px;
+}
+
+/* ---------- Base app shell ---------- */
+.stApp {
+    background:
+        radial-gradient(circle at 15% 0%, rgba(0, 217, 255, 0.06) 0%, transparent 45%),
+        radial-gradient(circle at 85% 15%, rgba(139, 124, 246, 0.05) 0%, transparent 40%),
+        linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px),
+        linear-gradient(180deg, var(--bg-void) 0%, var(--bg-primary) 100%);
+    background-size: auto, auto, 44px 44px, 44px 44px, auto;
+    font-family: var(--font-body);
+    color: var(--text-primary);
+}
+
+[data-testid="stHeader"] {
+    background: rgba(5, 7, 12, 0.6);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border-glass);
+}
+
+[data-testid="stSidebar"] {
+    background: linear-gradient(180deg, #070A11 0%, #0B101B 100%);
+    border-right: 1px solid var(--border-glass);
+}
+
+section[data-testid="stSidebar"] * {
+    color: var(--text-primary);
+}
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(0, 217, 255, 0.25); border-radius: 8px; }
+
+/* ---------- Headings ---------- */
+h1, h2, h3, .cmd-heading {
+    font-family: var(--font-display) !important;
+    color: var(--text-primary) !important;
+    letter-spacing: -0.01em;
+}
+
+/* ---------- Command bar / brand header ---------- */
+.cmd-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 26px;
+    margin-bottom: 22px;
+    border-radius: var(--radius-lg);
+    background: var(--bg-panel);
+    border: 1px solid var(--border-glass);
+    backdrop-filter: blur(14px);
+}
+.cmd-brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+.cmd-brand-mark {
+    width: 42px; height: 42px;
+    border-radius: 10px;
+    background: conic-gradient(from 180deg, var(--accent-cyan), var(--accent-violet), var(--accent-cyan));
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-weight: 600; font-size: 15px;
+    color: #06090F;
+    box-shadow: 0 0 24px rgba(0, 217, 255, 0.35);
+    animation: spin-slow 8s linear infinite;
+}
+@keyframes spin-slow {
+    from { filter: hue-rotate(0deg); }
+    to { filter: hue-rotate(360deg); }
+}
+.cmd-topbar {
+    position: relative;
+}
+.cmd-topbar::after {
+    content: "";
+    position: absolute;
+    bottom: -1px; left: 24px; right: 24px; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
+    opacity: 0.5;
+}
+.cmd-brand-title {
+    font-family: var(--font-display);
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.1;
+}
+.cmd-brand-subtitle {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-secondary);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+.cmd-status {
+    display: flex; align-items: center; gap: 8px;
+    font-family: var(--font-mono); font-size: 12px; color: var(--risk-safe);
+    padding: 7px 14px; border-radius: 20px;
+    background: rgba(16, 224, 160, 0.08);
+    border: 1px solid rgba(16, 224, 160, 0.25);
+}
+.pulse-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--risk-safe);
+    box-shadow: 0 0 0 0 rgba(16, 224, 160, 0.7);
+    animation: pulse 1.8s infinite;
+}
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(16, 224, 160, 0.55); }
+    70% { box-shadow: 0 0 0 9px rgba(16, 224, 160, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(16, 224, 160, 0); }
+}
+
+/* ---------- Glass KPI cards ---------- */
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 22px;
+}
+.kpi-card {
+    position: relative;
+    background: var(--bg-panel);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-lg);
+    padding: 20px 22px;
+    overflow: hidden;
+    backdrop-filter: blur(14px);
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.kpi-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--border-glass-strong);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+}
+.kpi-card::before {
+    content: "";
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--accent-cyan), transparent);
+}
+.kpi-card::after {
+    content: "";
+    position: absolute; top: -30%; right: -20%; width: 90px; height: 90px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0, 217, 255, 0.10), transparent 70%);
+    pointer-events: none;
+}
+.kpi-icon {
+    width: 30px; height: 30px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 8px;
+    background: var(--accent-cyan-dim);
+    border: 1px solid var(--border-glass-strong);
+    color: var(--accent-cyan);
+    font-size: 14px;
+    margin-bottom: 14px;
+}
+.kpi-label {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+.kpi-value {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1;
+}
+.kpi-delta {
+    display: flex; align-items: center; gap: 5px;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    color: var(--text-secondary);
+}
+.kpi-delta-arrow { font-size: 9px; }
+.kpi-delta.up { color: var(--risk-fraud); }
+.kpi-delta.down { color: var(--risk-safe); }
+.kpi-delta.neutral { color: var(--text-dim); }
+
+/* Risk-colored accent variants */
+.kpi-card.risk-safe::before { background: linear-gradient(90deg, var(--risk-safe), transparent); }
+.kpi-card.risk-safe .kpi-icon { color: var(--risk-safe); background: rgba(16, 224, 160, 0.10); border-color: rgba(16, 224, 160, 0.3); }
+.kpi-card.risk-medium::before { background: linear-gradient(90deg, var(--risk-medium), transparent); }
+.kpi-card.risk-medium .kpi-icon { color: var(--risk-medium); background: rgba(245, 179, 66, 0.10); border-color: rgba(245, 179, 66, 0.3); }
+.kpi-card.risk-high::before { background: linear-gradient(90deg, var(--risk-high), transparent); }
+.kpi-card.risk-high .kpi-icon { color: var(--risk-high); background: rgba(249, 115, 22, 0.10); border-color: rgba(249, 115, 22, 0.3); }
+.kpi-card.risk-fraud::before { background: linear-gradient(90deg, var(--risk-fraud), transparent); }
+.kpi-card.risk-fraud .kpi-icon { color: var(--risk-fraud); background: rgba(255, 59, 92, 0.10); border-color: rgba(255, 59, 92, 0.3); }
+
+/* ---------- Generic glass panel ---------- */
+.glass-panel {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-lg);
+    padding: 20px 22px;
+    backdrop-filter: blur(14px);
+    margin-bottom: 18px;
+}
+.panel-title {
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.panel-subtitle {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-bottom: 14px;
+}
+
+/* ---------- Risk badges ---------- */
+.badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+}
+.badge-dot { width: 6px; height: 6px; border-radius: 50%; }
+.badge.safe { background: rgba(16, 224, 160, 0.10); color: var(--risk-safe); border: 1px solid rgba(16, 224, 160, 0.3); }
+.badge.safe .badge-dot { background: var(--risk-safe); }
+.badge.medium { background: rgba(245, 179, 66, 0.10); color: var(--risk-medium); border: 1px solid rgba(245, 179, 66, 0.3); }
+.badge.medium .badge-dot { background: var(--risk-medium); }
+.badge.high { background: rgba(249, 115, 22, 0.10); color: var(--risk-high); border: 1px solid rgba(249, 115, 22, 0.3); }
+.badge.high .badge-dot { background: var(--risk-high); }
+.badge.fraud { background: rgba(255, 59, 92, 0.12); color: var(--risk-fraud); border: 1px solid rgba(255, 59, 92, 0.35); }
+.badge.fraud .badge-dot { background: var(--risk-fraud); box-shadow: 0 0 8px var(--risk-fraud); }
+
+/* ---------- Live feed ticker row ---------- */
+.feed-row {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr 1fr 1fr 1fr 0.9fr;
+    gap: 10px;
+    align-items: center;
+    padding: 11px 14px;
+    border-radius: var(--radius-sm);
+    border: 1px solid transparent;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    color: var(--text-secondary);
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+.feed-row:hover {
+    background: rgba(255, 255, 255, 0.02);
+    border-color: var(--border-glass);
+}
+.feed-row.header {
+    color: var(--text-dim);
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    border-bottom: 1px solid var(--border-glass);
+    padding-bottom: 10px;
+}
+.feed-amount { color: var(--text-primary); font-weight: 600; }
+
+/* ---------- Copilot chat bubbles ---------- */
+.copilot-bubble-user {
+    background: var(--accent-violet-dim);
+    border: 1px solid rgba(139, 124, 246, 0.3);
+    border-radius: 14px 14px 3px 14px;
+    padding: 12px 16px;
+    margin: 8px 0;
+    max-width: 78%;
+    margin-left: auto;
+    font-size: 14px;
+    color: var(--text-primary);
+}
+.copilot-bubble-ai {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-glass);
+    border-radius: 14px 14px 14px 3px;
+    padding: 12px 16px;
+    margin: 8px 0;
+    max-width: 82%;
+    font-size: 14px;
+    color: var(--text-primary);
+    line-height: 1.55;
+}
+
+/* ---------- Buttons ---------- */
+.stButton > button, .stDownloadButton > button {
+    background: linear-gradient(135deg, rgba(0, 217, 255, 0.14), rgba(139, 124, 246, 0.1));
+    border: 1px solid var(--border-glass-strong);
+    color: var(--text-primary);
+    border-radius: var(--radius-md);
+    font-family: var(--font-mono);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    transition: all 0.2s ease;
+}
+.stButton > button:hover, .stDownloadButton > button:hover {
+    border-color: var(--accent-cyan);
+    box-shadow: 0 0 16px rgba(0, 217, 255, 0.2);
+    color: var(--accent-cyan);
+}
+
+/* ---------- Tabs / option menu polish ---------- */
+[data-testid="stMetric"] {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-md);
+    padding: 12px 16px;
+}
+
+hr { border-color: var(--border-glass) !important; }
+
+/* Section divider label */
+.section-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent-cyan);
+    margin: 6px 0 10px 0;
+    display: flex; align-items: center; gap: 8px;
+}
+.section-eyebrow::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--border-glass-strong), transparent);
+}

@@ -1,0 +1,7 @@
+AI-Fraud-Intelligence-Command-Center/datasets/fraud_command_center.db
+**/__pycache__/
+*.pyc
+.env
+.pytest_cache/
+reports/*.pdf
+reports/*.xlsx
