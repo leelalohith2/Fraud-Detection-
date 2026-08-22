@@ -16,10 +16,10 @@ from streamlit_option_menu import option_menu
 ROOT_DIR = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT_DIR))
 
-from backend.config import get_logger, settings
+from config import get_logger, settings
 from backend.data_pipeline import run_full_pipeline
 from backend.database import init_db
-from backend.hybrid_ai import HybridFraudEngine
+from backend.hybrid_ai import HybridFraudEngine 
 from backend.streaming import get_simulated_stream
 
 from frontend import dashboard
